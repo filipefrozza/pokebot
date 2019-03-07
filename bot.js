@@ -66,7 +66,7 @@ exports.iniciarBot = function(){
 	            	if(args.length == 0){
 	            		mensagens.enviarGenerico("Ops", "Precisa especificar onde quer ir");
 	            	}else{
-	            		console.log("Jogador "+ususario.username+" indo para "+args[0]);
+	            		console.log("Jogador "+usuario.username+" indo para "+args[0]);
 	            		pokemon.goto(args[0]);
 	            	}
 

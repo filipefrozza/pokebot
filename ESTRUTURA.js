@@ -42,15 +42,19 @@ events: [
 						poke.exp = 0;
 						poke.next = 10;
 						poke.owner = player.pid;
+						poke.iv = pokemon.gerarIv(true);
+						poke.ev = pokemon.gerarEv();
+						poke.stats = pokemon.calcularStats(poke);
+						poke = pokemon.gerarNature(poke);
 
 						console.log(poke);
-						pokedb.collection('keys').removeOne({id: "firstpoke", pid: usuario.id});
-						pokedb.collection('keys').insertOne({id: "oakparcel", pid: usuario.id});
-						pokedb.collection('keys').insertOne({id: "gotpoke", pid: usuario.id});
+						// pokedb.collection('keys').removeOne({id: "firstpoke", pid: usuario.id});
+						// pokedb.collection('keys').insertOne({id: "oakparcel", pid: usuario.id});
+						// pokedb.collection('keys').insertOne({id: "gotpoke", pid: usuario.id});
 					}
 				});
 			}else{
-				mensagens.enviarGenerico('Ops','Você precisa escolher entre charmander, bulbasaur e squirtle');
+				mensagens.enviarGenerico('Ops','Você precisa escolher entre pikachu e eevee');
 			}
 		}
 	},{
