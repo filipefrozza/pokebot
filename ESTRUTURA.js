@@ -102,7 +102,15 @@ pokemons = [
 		name: "Bulbasaur",
 		type: ["Grass"],
 		region: ["route1"],
-		place: []
+		place: [],
+		base: {
+			hp: 45,
+			atk: 49,
+			def: 49,
+			spatk: 65,
+			spdef: 65,
+			spd: 45
+		}
 	},{
 		index: 2,
 		id: "ivysaur",
@@ -183,13 +191,13 @@ regions = [
 	{
 		name: "Pallet Town",
 		id: "pallet",
-		connections: ["route1"],
+		connections: ["r1entrance"],
 		type: "city",
 		key: "pallet"
 	},{
 		name: "Route 1",
 		id: "route1",
-		connections: ["pallet"],
+		connections: [],
 		type: "route",
 		key: "gotpoke",
 		minlv: 2,
@@ -199,26 +207,26 @@ regions = [
 
 places = [
 	{
-		name: "entrance",
-		id: "entrance",
+		name: "Entrada",
+		id: "r1entrance",
 		region: "route1",
 		key: null,
 		npc: [],
-		connections: ["pallet"]
+		connections: ["pallet","r1mid"]
 	},{
-		name: "route",
-		id: "route",
+		name: "Meio",
+		id: "r1mid",
 		region: "route1",
 		key: null,
 		npc: [],
-		connections: []
+		connections: ["r1entrance","r1final"]
 	},{
-		name: "final",
-		id: "final",
+		name: "Final",
+		id: "r1final",
 		region: "route1",
 		key: null,
 		npc: [],
-		connections: ["viridian"]
+		connections: ["viridian","r1mid"]
 	}
 ];
 

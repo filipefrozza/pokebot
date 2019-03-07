@@ -62,6 +62,16 @@ exports.iniciarBot = function(){
 
 	            	break;
 
+	            case 'goto':
+	            	if(args.length == 0){
+	            		mensagens.enviarGenerico("Ops", "Precisa especificar onde quer ir");
+	            	}else{
+	            		console.log("Jogador "+ususario.username+" indo para "+args[0]);
+	            		pokemon.goto(args[0]);
+	            	}
+
+	            	break;
+
 	            default:
 	            	console.log("Jogador "+usuario.username+" tentando usar comando "+cmd);
 	            	pokemon.trigger(cmd, args);

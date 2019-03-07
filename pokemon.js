@@ -114,3 +114,106 @@ exports.trigger = function(cmd, args){
 		});
 	});
 };
+
+exports.goto = function(arg){
+	pokedb = exports.data.pokedb;
+	usuario = exports.data.usuario;
+	mensagens = exports.data.mensagens;
+	config = exports.data.config;
+
+	pokedb.collection('users').findOne({pid: usuario.id}, function(err, user){
+		if(err) throw err;
+		if(user == null) return err;
+
+		pokedb.collection('regions').findOne({id: user.region}, function(err, reg){
+			if(err) throw err;
+			if(reg == null) return err;
+
+			if(reg.type == 'city'){
+				if(arg == reg.id){
+					pokedb.collection('users').updateOne({pid: usuario.id}, {$set: {place: ""}});
+					return;
+				}else if(user.place != ""){
+					mensagens.enviarGenerico("Ops", "Você deve sair do prédio antes");
+					return;
+				}else if(reg.connections.includes(arg)){
+					pokedb.collection('places').findOne({id: arg}, function(err, place){
+						if(err) throw err;
+						if(place == null){
+							mensagens.enviarGenerico("Ops", "Local ainda em desenvolvimento");
+						}else{
+							pokedb.collection('users').updateOne({pid: usuario.id}, {$set: {place: arg, region: place.region}});
+							mensagens.enviarGenerico("**Andou**", "Você foi para "+place.name+" - "+place.region);
+						}
+					});
+					return;
+				}
+				pokedb.collection('builds').findOne({region: reg.id, id: arg}, function(err, builds){
+					if(err) throw err;
+					if(builds == null){
+						mensagens.enviarGenerico("Ops", "Não é possível ir até "+arg);
+
+						return;
+					}else{
+						if(builds.key){
+							pokedb.collection('keys').findOne({pid: usuario.id, id: builds.key}, function(err, key){
+								if(err) throw err;
+								if(key == null){
+									mensagens.enviarGenerico("Ops", "Você ainda não pode ir para esse lugar");
+								}else{
+									//adicionar interrupções dps
+									pokedb.collection('users').updateOne({pid: usuario.id}, {$set: {place: arg}});
+								}
+							});
+						}
+					}
+				});
+			}else{
+				pokedb.collection('places').findOne({id: user.place, connections: arg}, function(err, place){
+					if(err) throw err;
+					if(place == null){
+						mensagens.enviarGenerico("Ops", "Não é possível ir até "+args);
+					}else{
+						pokedb.collection('regions').findOne({id: arg}, function(err, reg){
+							if(err) throw err;
+							if(reg == null){
+								pokedb.collection('places').findOne({id: arg}, function(err, place){
+									if(err) throw err;
+									if(place == null){
+										mensagens.enviarGenerico("Ops", "Esse lugar ainda está em desenvolvimento");
+									}else{
+										if(place.key){
+											pokedb.collection('keys').findOne({pid: usuario.id, id: place.key}, function(err, key){
+												if(err) throw err;
+												if(key == null){
+													mensagens.enviarGenerico("Ops", "Você ainda não pode ir para esse lugar");
+												}else{
+													//adicionar interrupções dps
+													pokedb.collection('users').updateOne({pid: usuario.id}, {$set: {place: arg}});
+													mensagens.enviarGenerico("**Andou**", "Você foi para "+place.name+" - "+place.region);
+												}
+											});
+										}
+									}
+								});
+							}else{
+								if(region.key){
+									pokedb.collection('keys').findOne({pid: usuario.id, id: region.key}, function(err, key){
+										if(err) throw err;
+										if(key == null){
+											mensagens.enviarGenerico("Ops", "Você ainda não pode ir para esse lugar");
+										}else{
+											//adicionar interrupções dps
+											pokedb.collection('users').updateOne({pid: usuario.id}, {$set: {region: arg, place: ""}});
+											mensagens.enviarGenerico("**Andou**", "Você foi para "+region.name);
+										}
+									});
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+	});
+};
