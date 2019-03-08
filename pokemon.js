@@ -271,23 +271,23 @@ exports.goto = function(arg){
 exports.gerarIv = function(especial){
 	var iv;
 	if(especial){
-		iv{
+		iv = {
 			hp: 25+~~(Math.random()*7),
 			atk: 25+~~(Math.random()*7),
 			def: 25+~~(Math.random()*7),
 			spatk: 25+~~(Math.random()*7),
 			spdef: 25+~~(Math.random()*7),
 			spd: 25+~~(Math.random()*7)
-		}
+		};
 	}else{
-		iv{
+		iv = {
 			hp: ~~(Math.random()*32),
 			atk: ~~(Math.random()*32),
 			def: ~~(Math.random()*32),
 			spatk: ~~(Math.random()*32),
 			spdef: ~~(Math.random()*32),
 			spd: ~~(Math.random()*32)
-		}
+		};
 	}
 
 	return iv;
@@ -296,23 +296,23 @@ exports.gerarIv = function(especial){
 exports.gerarEv = function(especial){
 	var Ev;
 	if(especial){
-		ev{
+		ev = {
 			hp: 0,
 			atk: 0,
 			def: 0,
 			spatk: 0,
 			spdef: 0,
 			spd: 0
-		}
+		};
 	}else{
-		ev{
+		ev = {
 			hp: 0,
 			atk: 0,
 			def: 0,
 			spatk: 0,
 			spdef: 0,
 			spd: 0
-		}
+		};
 	}
 
 	return e;

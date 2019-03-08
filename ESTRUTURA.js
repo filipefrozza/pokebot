@@ -78,7 +78,7 @@ events: [
 		args: 0,
 		local: "route1",
 		script: function(usuario){
-			mensagens.enviarGenerico('**Oak**','Cuidado '+usuario.username+' é perigoso lá fora');
+			mensagens.enviarGenerico('**Oak**','Cuidado '+usuario.username+' é perigoso lá fora\nVenha até meu laboratório\n\n**$goto lab**');
 		}
 	}
 ];
