@@ -1,2 +1,2 @@
-node C:\Users\Dennis\Documents\Lightshot\pokebot\index.js
+node C:\Users\Frozza\Documents\Lightshot\bots\pokebot\index.js
 pause

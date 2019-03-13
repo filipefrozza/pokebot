@@ -67,11 +67,11 @@ events: [
 		script: function(usuario){
 			mensagens.enviarGenerico('**Mãe**','Bom dia filho, está um ótimo dia para passear');
 			pokedb.collection('keys').removeOne({id: "talkmom", pid: usuario.id});
-			pokedb.collection('keys').insertOne({id: "talkedmom", pid: usuario.id});
+			pokedb.collection('keys').insertOne({id: "blockroute1", pid: usuario.id});
 			pokedb.collection('keys').insertOne({id: "pallet", pid: usuario.id});
 		}
 	},{
-		key: "talkedmom",
+		key: "blockroute1",
 		name: "Ser parado pelo oak",
 		type: "interrupção",
 		trigger: "",
@@ -203,7 +203,7 @@ regions = [
 		id: "route1",
 		connections: [],
 		type: "route",
-		key: "gotpoke",
+		key: null,
 		minlv: 2,
 		maxlv: 4
 	}
