@@ -16,7 +16,7 @@ exports.enviarIntro = function(){
     });
 };
 
-exports.enviarCheckagem = function(user, events){
+exports.enviarCheckagem = function(user, events, region, connections){
     triggers = [];
 
     if(events.length == 0){
@@ -27,6 +27,17 @@ exports.enviarCheckagem = function(user, events){
         }
     }
 
+    if(region.type == 'city'){
+        field = {
+            name: "**Prédios**",
+            value: connections.join(', ')
+        };
+    }else{
+        field = {
+            name: "**Conexões**",
+            value: connections.join(', ')
+        };
+    }
 
     exports.message.channel.send({
         embed: {
@@ -37,12 +48,12 @@ exports.enviarCheckagem = function(user, events){
                 name: user.nome+" Lv"+user.level,
                 value: "("+user.exp+"/"+user.next+")"
             },{
-                name: "Região: "+user.region,
+                name: "Região: "+region.name,
                 value: "**Local:** "+user.place
             },{
                 name: "Comandos",
                 value: triggers.join('\n')
-            }    
+            },field
         ]},
         content: ''
     });

@@ -67,17 +67,17 @@ exports.check = function(){
 				pokedb.collection('regions').findOne({id: user.region}, function(err, region){
 					if(err) throw err;
 
-					if(region.type == city){
+					if(region.type == 'city'){
 						pokedb.collection('builds').find({region: user.region}).toArray(function(err, builds){
 							if(err) throw err;
 
 							connections = [];
 
 							for(b in builds){
-								connections.push(builds.id);
+								connections.push(builds[b].id);
 							}
 
-							mensagens.enviarCheckagem(user, events, region, region.connections);
+							mensagens.enviarCheckagem(user, events, region, connections);
 						})
 					}else{
 						mensagens.enviarCheckagem(user, events, region, region.connections);
