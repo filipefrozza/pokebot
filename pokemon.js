@@ -117,8 +117,9 @@ exports.trigger = function(cmd, args){
 						mensagens.enviarGenerico("Ops", "Quantidade de parâmetros incorreto");
 					}else{
 						try{
-							eval(event.script.code);
-							script(args, usuario);
+							// mensagens.enviarGenerico("Debug", event.script.code);
+							eval("script = "+event.script.code);
+							script(args, user);
 						}catch(e){
 							console.log(e);
 						}
@@ -336,7 +337,7 @@ exports.gerarEv = function(especial){
 		};
 	}
 
-	return e;
+	return ev;
 };
 
 exports.gerarNature = function(poke){
@@ -449,11 +450,19 @@ exports.gerarNature = function(poke){
 
 exports.calcularStats = function(pokemon){
 	pokemon.stats = {
-		hp: ((2*pokemon.base.hp+pokemon.iv.hp+(pokemon.ev.hp/4))*pokemon.level)/100+pokemon.level+10,
-		atk: ((2*pokemon.base.atk+pokemon.iv.atk+(pokemon.ev.atk/4))*pokemon.level)/100+5,
-		def: ((2*pokemon.base.def+pokemon.iv.def+(pokemon.ev.def/4))*pokemon.level)/100+5,
-		spatk: ((2*pokemon.base.spatk+pokemon.iv.spatk+(pokemon.ev.spatk/4))*pokemon.level)/100+5,
-		spdef: ((2*pokemon.base.spdef+pokemon.iv.spdef+(pokemon.ev.spdef/4))*pokemon.level)/100+5,
-		spd: ((2*pokemon.base.spd+pokemon.iv.spd+(pokemon.ev.spd/4))*pokemon.level)/100+5
+		hp: ~~(((2*pokemon.base.hp+pokemon.iv.hp+(pokemon.ev.hp/4))*pokemon.level)/100+pokemon.level+10),
+		atk: ~~(((2*pokemon.base.atk+pokemon.iv.atk+(pokemon.ev.atk/4))*pokemon.level)/100+5),
+		def: ~~(((2*pokemon.base.def+pokemon.iv.def+(pokemon.ev.def/4))*pokemon.level)/100+5),
+		spatk: ~~(((2*pokemon.base.spatk+pokemon.iv.spatk+(pokemon.ev.spatk/4))*pokemon.level)/100+5),
+		spdef: ~~(((2*pokemon.base.spdef+pokemon.iv.spdef+(pokemon.ev.spdef/4))*pokemon.level)/100+5),
+		spd: ~~(((2*pokemon.base.spd+pokemon.iv.spd+(pokemon.ev.spd/4))*pokemon.level)/100+5)
+	};
+
+	for(b in pokemon.naturebonus){
+		console.log(b,pokemon.stats[b]);
+		pokemon.stats[b] = ~~(pokemon.stats[b]+(pokemon.stats[b]*pokemon.naturebonus[b]/100));
+		console.log("res: ",pokemon.stats[b]);
 	}
+
+	return pokemon;
 };
