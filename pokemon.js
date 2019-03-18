@@ -111,8 +111,13 @@ exports.trigger = function(cmd, args){
 					// mensagens.enviarGenerico("Okay", "Comando "+cmd+" pertence a esse local");
 					console.log(args);
 					if(event.args==0){
-						eval("script = "+event.script.code);
-						script(usuario);
+						try{
+							eval("script = "+event.script.code);
+							script(usuario);
+						}catch(e){
+							console.log(e);
+							console.log("Erro capturado na trigger sem argumento");
+						}
 					}else if(event.args!=args.length){
 						mensagens.enviarGenerico("Ops", "Quantidade de parâmetros incorreto");
 					}else{
@@ -122,6 +127,7 @@ exports.trigger = function(cmd, args){
 							script(args, user);
 						}catch(e){
 							console.log(e);
+							console.log("Erro capturado na trigger com argumento");
 						}
 					}
 				}
