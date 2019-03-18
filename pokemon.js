@@ -56,35 +56,42 @@ exports.check = function(){
 	pokedb.collection('users').findOne({pid: usuario.id}, function(err, user){
 		if(err) throw err;
 		if(user == null) return err;
-		pokedb.collection('keys').find({pid: usuario.id}).toArray(function(err, arrkeys){
-			keys = [];
-			for(k in arrkeys){
-				keys.push(arrkeys[k].id);
-			}
-			pokedb.collection('events').find({key: {$in: keys}, local: {$in: [user.region, user.place]}}).toArray(function(err, events){
-				if(err) throw err;
 
-				pokedb.collection('regions').findOne({id: user.region}, function(err, region){
+		pokedb.collection('catched').find({owner: usuario.id}).toArray(function(err, poke){
+			if(err) throw err;
+
+			pokedb.collection('keys').find({pid: usuario.id}).toArray(function(err, arrkeys){
+				keys = [];
+				for(k in arrkeys){
+					keys.push(arrkeys[k].id);
+				}
+				pokedb.collection('events').find({key: {$in: keys}, local: {$in: [user.region, user.place]}}).toArray(function(err, events){
 					if(err) throw err;
 
-					if(region.type == 'city'){
-						pokedb.collection('builds').find({region: user.region}).toArray(function(err, builds){
-							if(err) throw err;
+					pokedb.collection('regions').findOne({id: user.region}, function(err, region){
+						if(err) throw err;
 
-							connections = [];
+						if(region.type == 'city'){
+							pokedb.collection('builds').find({region: user.region}).toArray(function(err, builds){
+								if(err) throw err;
 
-							for(b in builds){
-								connections.push(builds[b].id);
-							}
+								connections = [];
 
-							mensagens.enviarCheckagem(user, events, region, connections);
-						})
-					}else{
-						mensagens.enviarCheckagem(user, events, region, region.connections);
-					}
+								for(b in builds){
+									connections.push(builds[b].id);
+								}
+
+								mensagens.enviarCheckagem(user, events, region, connections, poke);
+							})
+						}else{
+							mensagens.enviarCheckagem(user, events, region, region.connections, poke);
+						}
+					});
 				});
 			});
+
 		});
+
 	});
 };
 

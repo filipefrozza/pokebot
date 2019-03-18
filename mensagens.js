@@ -16,8 +16,19 @@ exports.enviarIntro = function(){
     });
 };
 
-exports.enviarCheckagem = function(user, events, region, connections){
+exports.enviarCheckagem = function(user, events, region, connections, poke){
+    fields = [];
     triggers = [];
+
+    fields.push({
+        name: user.nome+" Lv"+user.level,
+        value: "("+user.exp+"/"+user.next+")"
+    });
+
+    fields.push({
+        name: "Região: "+region.name,
+        value: "**Local:** "+user.place
+    });
 
     if(events.length == 0){
         triggers.push("Nenhum comando especial nesse local");
@@ -26,6 +37,11 @@ exports.enviarCheckagem = function(user, events, region, connections){
             triggers.push("**"+events[e].trigger+"** "+events[e].name);
         }
     }
+
+    fields.push({
+        name: "Comandos",
+        value: triggers.join('\n')
+    });
 
     if(region.type == 'city'){
         field = {
@@ -39,22 +55,43 @@ exports.enviarCheckagem = function(user, events, region, connections){
         };
     }
 
+    fields.push(field);
+
+    fields.push({
+        name: "**\nTime\n**",
+        value: "** **"
+    });
+
+    if(poke.length == 0){
+        fields.push({
+            name: "**Você ainda não possui pokemons",
+            value: "** **"
+        });
+    }else{
+        console.log(poke);
+        for(p in poke){
+            fields.push({
+                name: poke[p].name,
+                value: "Lv "+poke[p].level,
+                inline: true
+            });
+        }
+        while(fields.length%3!=0){
+            fields.push({
+                name: "** **",
+                value: "** **",
+                inline: true
+            });
+        }
+    }
+
     exports.message.channel.send({
         embed: {
             title: '**PokeBot**',
             color: 11534368,
             // description: '',
-            fields: [{
-                name: user.nome+" Lv"+user.level,
-                value: "("+user.exp+"/"+user.next+")"
-            },{
-                name: "Região: "+region.name,
-                value: "**Local:** "+user.place
-            },{
-                name: "Comandos",
-                value: triggers.join('\n')
-            },field
-        ]},
+            fields: fields
+        },
         content: ''
     });
 };
