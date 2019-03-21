@@ -38,14 +38,7 @@ events: [
 					if(!poke){
 						console.log("nenhum "+args[0]+" encontrado");
 					}else{
-						poke.level = 5;
-						poke.exp = 0;
-						poke.next = 10;
-						poke.owner = usuario.pid;
-						poke.iv = pokemon.gerarIv(true);
-						poke.ev = pokemon.gerarEv();
-						poke = pokemon.gerarNature(poke);
-						poke = pokemon.calcularStats(poke);
+						poke = pokemon.gerarPokemon(poke,5,usuario.pid,true);
 
 						pokedb.collection('catched').insertOne(poke, function(err, res){
 							if(err) throw err;

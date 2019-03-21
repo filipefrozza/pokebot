@@ -303,6 +303,18 @@ exports.goto = function(arg){
 	});
 };
 
+exports.gerarPokemon = function(poke, level, owner, especial){
+	poke.level = level;
+	poke.exp = 0;
+	poke.next = 10;
+	poke.owner = owner;
+	poke.iv = exports.gerarIv(especial);
+	poke.ev = exports.gerarEv();
+	poke = exports.gerarNature(poke);
+	poke = exports.calcularStats(poke);
+	return poke;
+}
+
 exports.gerarIv = function(especial){
 	var iv;
 	if(especial){
